@@ -57,23 +57,14 @@ async function acceptSellOffer(toi) {
   }
   // Submit signed blob --------------------------------------------------------
   const tx = await client.submitAndWait(transactionBlob,{wallet});
-  const nfts = await client.request({
-	method: "account_nfts",
-	account: wallet.classicAddress
-  })
-  console.log(JSON.stringify(nfts,null,2))
-
-  // Check transaction results -------------------------------------------------
-  console.log("Transaction result:",
-    JSON.stringify(tx.result.meta.TransactionResult, null, 2))
-  console.log("Balance changes:",
-    JSON.stringify(xrpl.getBalanceChanges(tx.result.meta), null, 2))
+  if(tx.result.meta.TransactionResult=='tecOBJECT_NOT_FOUND')throw Error('Not found the Wallet');
+  if(tx.result.meta.TransactionResult!='tesSUCCESS')throw Error('Undefined');
   client.disconnect()
   // End of acceptSellOffer()
 }
 
 const getWallet = async(seed) => {
-  updateProgress(10,'Connecting XRPL...');
+ 
   const client = new xrpl.Client(wss);
 	await client.connect();
   updateProgress(20,'Connected XRPL');
@@ -96,6 +87,9 @@ const nextStep = (step) => {
   else if(step==2){
     iconLoad.classList.remove("mdi-wallet-outline");
     iconLoad.classList.add("mdi-check");
+  }else if(step===0){
+    seccionWallets.style.display = "block";
+    seccionLoad.style.display = "none";
   }
 }
 
@@ -104,18 +98,24 @@ const getNFT = async(tokenOfferIndex) => {
 }
 
 const init = async(seed) => {
-  nextStep(1);
-  await getWallet();
-  updateProgress(60,'Transferring NFT to your wallet...');
-  await acceptSellOffer(tokenOfferIdex);
-  updateProgress(100,'Finished, Now you have your free NFT');
-  nextStep(2);
+  try{
+    updateProgress(10,'Connecting XRPL...');
+    nextStep(1);
+    await getWallet();
+    updateProgress(60,'Transferring NFT to your wallet...');
+    await acceptSellOffer(tokenOfferIdex);
+    updateProgress(100,'Finished, Now you have your free NFT');
+    nextStep(2);
+  }catch(error){
+    toastr.warning('An error has occurred: "'+error+'", try again');
+    nextStep(0);
+  }
 }
 //events
 
 btnConnect.addEventListener('click',(e) => { 
   console.log(e)
-  if(!seed.value)alert('error');
+  if(!seed.value) return toastr.warning('You should add a valid seed.');
   init(seed.value)
 });
 
