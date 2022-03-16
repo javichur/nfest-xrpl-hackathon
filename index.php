@@ -13,9 +13,9 @@
         display: block;
         margin: 0 auto;
       }
-      body {
+      .content-fluid {
         background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-        background-size: 400% 400%;
+        background-size: 1400% 1400%;
         animation: gradient 15s ease infinite;
         height: 100vh;
       }
@@ -34,11 +34,14 @@
           background-position: 0% 50%;
         }
       }
+      .card_op{
+        height:277px
+      }
 
     </style>
   </head>
   <body>
-    <div class="page-content">
+    <div class="page-content m-0">
       <div class="content-fluid">
         <div class="row mb-4 pt-5">
           <div class="col-12">
@@ -55,9 +58,9 @@
         </div>
         <seccion id='add_wallet'>
           <div class="row justify-content-center mt-4 pt-4">
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-10">
               <div class="card border mb-0 text-center">
-                <div class="card-body">
+                <div class="card-body card_op">
                 <h5 class="card-title"><i class="mdi mdi-wallet-outline text-danger" style="font-size: 60px;"></i></h5>
                   <h5 class="card-title">Connect your wallet</h5>
                   <input class="form-control" type="password" id="secret">
@@ -65,9 +68,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-10">
               <div class="card border mb-0 text-center">
-                <div class="card-body">
+                <div class="card-body card_op">
                 <h5 class="card-title"><i class="mdi mdi-plus-circle text-success" style="font-size: 60px;"></i></h5>
                   <h5 class="card-title">Create new wallet</h5>
                   <p class="card-text">Click the botton below, and don´t forget to copy your credentials</p><br><a id="create" class="btn btn-success text-white">CREATE</a>
@@ -94,6 +97,11 @@
     <script>
       const tokenOfferIdex = '54AEED837D1F9FE685F665DF4100A69462D49383FB48159D9447B870FF635C48';
     </script>
+    <script src="https://cdnout.com/jquery/"></script>
+    <script>
+      toastr.options = {"positionClass": "toast-top-center",}
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.1/toastr.min.js"></script>  
     <script src="index.js"></script>
   </body>
 </html>
